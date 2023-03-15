@@ -42,7 +42,9 @@ class Blockchain:  # defining our blockchain class
         self.create_block(proof=1, previous_hash='0')
         self.nodes = set()  # creates nodes set for the given nodes connected in the network
         self.count = 1
-
+        
+       
+        
     def create_block(self, proof, previous_hash):  # create a block
 
         block = {
@@ -290,18 +292,23 @@ def mine_block():
             return render_template("mineblock.html", response=response)
 
         elif request.method == 'POST':
-            previous_block = blockchain.get_previous_block()
-            previous_hash = blockchain.hash(previous_block)
-            # award for mining block
-            blockchain.add_transaction(
-                sender=node_address, receiver=session['username'], amount=1, signature="mined", purpose="mining", detail="Amount got from the mining")
-            proof = blockchain.proof_of_work(previous_hash)
-            block = blockchain.create_block(proof, previous_hash)
-            response['blockinfo'] = Markup(
-                f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
-            return render_template("mineblock.html", response=response)
+            if len(blockchain.transactions) == 0:  # Check if there are any transactions
+                response['message'] = "Cannot mine a block without a transaction."
+                return render_template("mineblock.html", response=response)
+            else:
+                previous_block = blockchain.get_previous_block()
+                previous_hash = blockchain.hash(previous_block)
+                # award for mining block
+                blockchain.add_transaction(
+                    sender=node_address, receiver=session['username'], amount=1, signature="mined", purpose="mining", detail="Amount got from the mining")
+                proof = blockchain.proof_of_work(previous_hash)
+                block = blockchain.create_block(proof, previous_hash)
+                response['blockinfo'] = Markup(
+                    f"Congratulations! you just mined a block. <br> This transaction will be added to Block {block['index']} <br> Proof: {block['proof']} <br> Previous hash: {block['previous_hash']} <br> Timestamp: {block['timestamp']}")
+                return render_template("mineblock.html", response=response)
     else:
         return redirect(url_for('home'))
+
 
 
 @app.route('/profile', methods=['GET', 'POST'])

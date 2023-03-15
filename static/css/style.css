@@ -555,3 +555,23 @@ label > input[type="checkbox"]:checked + * {
   cursor: pointer;
   margin-left: 50%;
 }
+
+/* sdasd */
+/* .table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.table td,
+.table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+} */
